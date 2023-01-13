@@ -2,7 +2,7 @@ import { Fragment, Suspense } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
-import Navigation from "../../components/navigation/navigation.component";
+import Header from "../../components/header/header.component";
 import Footer from "../../components/footer/footer.component";
 import ErrorBoundaryFallback from "../../components/error-boundary-fallback/error-boundary-fallback.component";
 import Spinner from "../../components/spinner/spinner.component";
@@ -12,7 +12,7 @@ const Root = () => {
 
   return (
     <Fragment>
-      <Navigation />
+      <Header />
       <ErrorBoundary
         FallbackComponent={ErrorBoundaryFallback}
         onReset={() => {
