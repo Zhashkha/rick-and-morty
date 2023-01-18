@@ -1,17 +1,17 @@
 import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Root from "./pages/root/root.component";
+import Root from "./pages/root/root.page";
 
-const NotFound = lazy(() => import("./pages/not-found/not-found.component"));
+const NotFound = lazy(() => import("./pages/not-found/not-found.page"));
 const CharacterList = lazy(
-  () => import("./pages/character-list/character-list.component")
+  () => import("./pages/character-list/character-list.page")
 );
 const EpisodeList = lazy(
-  () => import("./pages/episode-list/episode-list.component")
+  () => import("./pages/episode-list/episode-list.page")
 );
 const LocationList = lazy(
-  () => import("./pages/location-list/location-list.component")
+  () => import("./pages/location-list/location-list.page")
 );
 
 function App() {
