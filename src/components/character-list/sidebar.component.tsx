@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-import PaginationSettings from "../shared-compoents/pagination-settings.component";
+import PaginationSettings from "../shared-compoents/pagination-settings/pagination-settings.component";
 import Filters from "./filters.component";
 
 const Sidebar = () => {

@@ -1,11 +1,23 @@
+import { useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import { Container, Grid } from "@mui/material";
 
 import Title from "../../components/character-list/title-component";
 import SearchBox from "../../components/character-list/search-box.component";
 import Sidebar from "../../components/character-list/sidebar.component";
 import CharacterGrid from "../../components/shared-compoents/character-grid/character-grid.component";
+import GET_CHARACTERS from "../../state-management/graphql/queries/get-characters";
+import Spinner from "../../components/general-components/spinner/spinner.component";
 
 const CharacterList = () => {
+  const { loading, data } = useQuery(GET_CHARACTERS);
+
+  useEffect(() => {
+    if (!loading) {
+      // call redux action here and pass the data to store
+    }
+  }, [data]);
+
   return (
     <Container sx={{ marginTop: 5 }}>
       <Title />
@@ -22,7 +34,7 @@ const CharacterList = () => {
         </Grid>
         {/* <Grid item xs={8} sx={{ border: "2px solid green" }}> */}
         <Grid item xs={8}>
-          <CharacterGrid />
+          {loading ? <Spinner /> : <CharacterGrid data={data} />}
         </Grid>
       </Grid>
     </Container>
