@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Grid,
   Typography,
@@ -12,23 +13,20 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+import { selectCharacters } from "../../../state-management/redux/characters/characters.selector";
 import { ExpandMore } from "./character-grid.styles";
 
-const CharacterGrid = ({ data }: { data: any }) => {
+const CharacterGrid = () => {
   const [expanded, setExpanded] = useState(false);
+  const characters = useSelector(selectCharacters);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const {
-    // characters: { info, results }
-    characters: { results }
-  } = data;
-
   return (
     <Grid container spacing={3}>
-      {results.map((character: any) => {
+      {characters.map((character: any) => {
         const {
           id,
           name,

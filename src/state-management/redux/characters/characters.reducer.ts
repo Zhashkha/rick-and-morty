@@ -1,8 +1,15 @@
 import { AnyAction } from "redux";
 
 import { CHARACTERS_ACTION_TYPES } from "./characters.types";
+import { Character, Maybe } from "../../graphql/api-generated/graphql";
 
-export const CHARACTERS_INITIAL_STATE = {
+export type CharactersReducer = {
+  characters: Maybe<Maybe<Character>[]> | undefined;
+  isLoading: boolean;
+  error: Error | null;
+};
+
+export const CHARACTERS_INITIAL_STATE: CharactersReducer = {
   characters: [],
   isLoading: false,
   error: null
@@ -21,7 +28,7 @@ export const charactersReducer = (
         isLoading: true
       };
     case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_SUCCESS:
-      return { ...state, isLoading: false, categories: payload };
+      return { ...state, isLoading: false, characters: payload };
     case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_FAILED:
       return { ...state, isLoading: false, error: payload };
     default:
