@@ -9,17 +9,23 @@ export const selectCharacters = createSelector(
   (charactersReducer) => charactersReducer.characters
 );
 
-// export const selectCategoriesMap = createSelector(
-//   [selectCategories],
-//   (categories) =>
-//     categories.reduce((acc, category) => {
-//       const { title, items } = category;
-//       acc[title.toLowerCase()] = items;
-//       return acc;
-//     }, {})
-// );
+export const selectCharactersByPage = (page: number) =>
+  createSelector([selectCharacters], (characters) => characters[page]);
 
-export const selectIsLoading = createSelector(
+export const selectIsPageFetched = (page: number) =>
+  createSelector([selectCharacters], (characters) => !!characters[page]);
+
+export const selectCharactersIsLoading = createSelector(
   [selectCharactersReducer],
   (charactersReducer) => charactersReducer.isLoading
+);
+
+export const selectCharactersPagination = createSelector(
+  [selectCharactersReducer],
+  (charactersReducer) => charactersReducer.pagination
+);
+
+export const selectCharactersPageIndex = createSelector(
+  [selectCharactersPagination],
+  (charactersPagination) => charactersPagination.pageIndex
 );

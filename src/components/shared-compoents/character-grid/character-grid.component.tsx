@@ -13,20 +13,29 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { selectCharacters } from "../../../state-management/redux/characters/characters.selector";
+import {
+  selectCharactersByPage,
+  selectCharactersPageIndex
+} from "../../../state-management/redux/characters/characters.selector";
 import { ExpandMore } from "./character-grid.styles";
 
 const CharacterGrid = () => {
-  const [expanded, setExpanded] = useState(false);
-  const characters = useSelector(selectCharacters);
+  const [cardExpanded, setCardExpanded] = useState<{
+    [key: number]: boolean;
+  }>();
+  const pageIndex = useSelector(selectCharactersPageIndex);
+  const characters = useSelector(selectCharactersByPage(pageIndex));
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleExpandClick = (id: number) => {
+    setCardExpanded({
+      ...cardExpanded,
+      [id]: !((cardExpanded && cardExpanded[id]) || false)
+    });
   };
 
   return (
     <Grid container spacing={3}>
-      {characters.map((character: any) => {
+      {characters?.map((character: any) => {
         const {
           id,
           name,
@@ -74,15 +83,19 @@ const CharacterGrid = () => {
                 </CardContent>
                 <CardActions disableSpacing sx={{ paddingTop: 0 }}>
                   <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
+                    expand={(cardExpanded && cardExpanded[id]) || false}
+                    onClick={() => handleExpandClick(id)}
+                    aria-expanded={(cardExpanded && cardExpanded[id]) || false}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon />
                   </ExpandMore>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Collapse
+                  in={(cardExpanded && cardExpanded[id]) || false}
+                  timeout="auto"
+                  unmountOnExit
+                >
                   <CardContent sx={{ paddingTop: 0 }}>
                     <Typography component="div">
                       <Box

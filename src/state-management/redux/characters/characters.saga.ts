@@ -1,35 +1,65 @@
+import { AnyAction } from "redux";
 import { all, takeLatest, call, put, getContext } from "redux-saga/effects";
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 
 import GET_CHARACTERS from "../../graphql/queries/get-characters";
-import { Characters } from "../../graphql/api-generated/graphql";
+import GET_CHARACTERS_INFO from "../../graphql/queries/get-characters-info";
+import { Character, Info, Maybe } from "../../graphql/api-generated/graphql";
 
 import {
   fetchCharactersSuccess,
-  fetchCharactersFailed
+  fetchCharactersFailed,
+  fetchCharactersInfoSuccess,
+  fetchCharactersInfoFailed
 } from "./characters.action";
 import { CHARACTERS_ACTION_TYPES } from "./characters.types";
+import { charactersInfoNormalize } from "../../graphql/normalization/get-characters-info";
+import { charactersNormalize } from "../../graphql/normalization/get-characters";
 
-function* fetchCharactersStartAsync() {
+function* fetchCharactersStartAsync({ payload: pageIndex }: AnyAction) {
   try {
     const apolloClient: ApolloClient<NormalizedCacheObject> = yield getContext(
       "apolloClient"
     );
-    // const charactersArray = yield call(getCategoriesAndDocuments, "categories");
-    // const characters = yield apolloClient.query({query: GET_CHARACTERS});
+
     const {
-      data: { characters }
-    }: { data: { characters: Characters } } = yield call(apolloClient.query, {
-      query: GET_CHARACTERS
-    });
-    console.log(characters);
-    // normalizer goes here
-    const { results } = characters;
-    // const charactersArray: {} = [];
-    // yield put(fetchCharactersSuccess(charactersArray));
-    yield put(fetchCharactersSuccess(results));
+      data: {
+        characters: { results }
+      }
+    }: { data: { characters: { results: Maybe<Array<Maybe<Character>>> } } } =
+      yield call(apolloClient.query, {
+        query: GET_CHARACTERS,
+        variables: {
+          page: pageIndex
+        }
+      });
+
+    yield put(fetchCharactersSuccess(charactersNormalize(pageIndex, results)));
   } catch (error) {
     yield put(fetchCharactersFailed(error as Error));
+  }
+}
+
+function* fetchCharactersInfoStartAsync() {
+  try {
+    const apolloClient: ApolloClient<NormalizedCacheObject> = yield getContext(
+      "apolloClient"
+    );
+
+    const {
+      data: {
+        characters: { info }
+      }
+    }: { data: { characters: { info: Maybe<Info> } } } = yield call(
+      apolloClient.query,
+      {
+        query: GET_CHARACTERS_INFO
+      }
+    );
+
+    yield put(fetchCharactersInfoSuccess(charactersInfoNormalize(info)));
+  } catch (error) {
+    yield put(fetchCharactersInfoFailed(error as Error));
   }
 }
 
@@ -40,6 +70,13 @@ function* onfetchCharacters() {
   );
 }
 
+function* onfetchCharactersInfo() {
+  yield takeLatest(
+    CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_INFO_START,
+    fetchCharactersInfoStartAsync
+  );
+}
+
 export function* charactersSaga() {
-  yield all([call(onfetchCharacters)]);
+  yield all([call(onfetchCharacters), call(onfetchCharactersInfo)]);
 }

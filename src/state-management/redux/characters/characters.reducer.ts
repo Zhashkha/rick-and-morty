@@ -1,16 +1,30 @@
 import { AnyAction } from "redux";
 
 import { CHARACTERS_ACTION_TYPES } from "./characters.types";
-import { Character, Maybe } from "../../graphql/api-generated/graphql";
+import { Character } from "../../graphql/api-generated/graphql";
 
 export type CharactersReducer = {
-  characters: Maybe<Maybe<Character>[]> | undefined;
+  characters: {
+    [key: number]: Array<Character>;
+  };
+  pagination: {
+    itemsCount: number;
+    pagesCount: number;
+    itemsPerPage: number;
+    pageIndex: number;
+  };
   isLoading: boolean;
   error: Error | null;
 };
 
 export const CHARACTERS_INITIAL_STATE: CharactersReducer = {
-  characters: [],
+  characters: {},
+  pagination: {
+    itemsCount: 0,
+    pagesCount: 0,
+    itemsPerPage: 20,
+    pageIndex: 1
+  },
   isLoading: false,
   error: null
 };
@@ -28,9 +42,31 @@ export const charactersReducer = (
         isLoading: true
       };
     case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_SUCCESS:
-      return { ...state, isLoading: false, characters: payload };
+      return {
+        ...state,
+        isLoading: false,
+        characters: { ...state.characters, ...payload }
+      };
     case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_FAILED:
       return { ...state, isLoading: false, error: payload };
+    case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_INFO_START:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_INFO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        pagination: { ...state.pagination, ...payload }
+      };
+    case CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_INFO_FAILED:
+      return { ...state, isLoading: false, error: payload };
+    case CHARACTERS_ACTION_TYPES.SET_CHARACTERS_PAGE:
+      return {
+        ...state,
+        pagination: { ...state.pagination, pageIndex: payload }
+      };
     default:
       return state;
   }

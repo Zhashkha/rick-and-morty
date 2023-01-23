@@ -1,26 +1,45 @@
-import { useEffect } from "react";
-// import { useParams } from "react-router-dom";
+import { useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Pagination } from "@mui/material";
 
 import Title from "../../components/character-list/title-component";
 import SearchBox from "../../components/character-list/search-box.component";
 import Sidebar from "../../components/character-list/sidebar.component";
 import CharacterGrid from "../../components/shared-compoents/character-grid/character-grid.component";
 import Spinner from "../../components/general-components/spinner/spinner.component";
-import { fetchCharactersStart } from "../../state-management/redux/characters/characters.action";
-import { selectIsLoading } from "../../state-management/redux/characters/characters.selector";
+import {
+  fetchCharactersInfoStart,
+  fetchCharactersStart,
+  setCharactersPage
+} from "../../state-management/redux/characters/characters.action";
+import {
+  selectCharactersIsLoading,
+  selectCharactersPagination,
+  selectIsPageFetched
+} from "../../state-management/redux/characters/characters.selector";
 
 const CharacterList = () => {
-  const loading = useSelector(selectIsLoading);
+  const loading = useSelector(selectCharactersIsLoading);
+  const { pagesCount, pageIndex } = useSelector(selectCharactersPagination);
+  const isPageFetched = useSelector(selectIsPageFetched(pageIndex));
 
-  // const { page } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCharactersStart());
+    dispatch(fetchCharactersInfoStart());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isPageFetched) {
+      dispatch(fetchCharactersStart(pageIndex));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageIndex]);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    dispatch(setCharactersPage(page));
+  };
 
   return (
     <Container sx={{ marginTop: 5 }}>
@@ -38,7 +57,21 @@ const CharacterList = () => {
         </Grid>
         {/* <Grid item xs={8} sx={{ border: "2px solid green" }}> */}
         <Grid item xs={8}>
-          {loading ? <Spinner /> : <CharacterGrid />}
+          {loading ? (
+            <Spinner />
+          ) : (
+            <Fragment>
+              <CharacterGrid />
+              <Pagination
+                count={pagesCount}
+                page={pageIndex}
+                onChange={handleChange}
+                color="primary"
+                shape="rounded"
+                sx={{ marginTop: 3 }}
+              />
+            </Fragment>
+          )}
         </Grid>
       </Grid>
     </Container>
