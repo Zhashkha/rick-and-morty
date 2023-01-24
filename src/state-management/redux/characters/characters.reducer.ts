@@ -13,6 +13,12 @@ export type CharactersReducer = {
     itemsPerPage: number;
     pageIndex: number;
   };
+  filter: {
+    name: string;
+    status: string;
+    species: string;
+    gender: string;
+  };
   isLoading: boolean;
   error: Error | null;
 };
@@ -24,6 +30,12 @@ export const CHARACTERS_INITIAL_STATE: CharactersReducer = {
     pagesCount: 0,
     itemsPerPage: 20,
     pageIndex: 1
+  },
+  filter: {
+    name: "",
+    status: "",
+    species: "",
+    gender: ""
   },
   isLoading: false,
   error: null
@@ -66,6 +78,16 @@ export const charactersReducer = (
       return {
         ...state,
         pagination: { ...state.pagination, pageIndex: payload }
+      };
+    case CHARACTERS_ACTION_TYPES.SET_CHARACTERS_FILTER:
+      return {
+        ...state,
+        filter: { ...state.filter, ...payload }
+      };
+    case CHARACTERS_ACTION_TYPES.CLEAR_CHARACTERS:
+      return {
+        ...state,
+        characters: {}
       };
     default:
       return state;

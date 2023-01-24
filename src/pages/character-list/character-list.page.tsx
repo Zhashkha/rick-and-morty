@@ -8,11 +8,13 @@ import Sidebar from "../../components/character-list/sidebar.component";
 import CharacterGrid from "../../components/shared-components/character-grid/character-grid.component";
 import Spinner from "../../components/general-components/spinner/spinner.component";
 import {
+  clearCharacters,
   fetchCharactersInfoStart,
   fetchCharactersStart,
   setCharactersPage
 } from "../../state-management/redux/characters/characters.action";
 import {
+  selectCharactersFilter,
   selectCharactersIsLoading,
   selectCharactersPagination,
   selectIsPageFetched
@@ -20,19 +22,23 @@ import {
 
 const CharacterList = () => {
   const loading = useSelector(selectCharactersIsLoading);
+  const filter = useSelector(selectCharactersFilter);
   const { pagesCount, pageIndex } = useSelector(selectCharactersPagination);
   const isPageFetched = useSelector(selectIsPageFetched(pageIndex));
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCharactersInfoStart());
+    dispatch(clearCharacters());
+    dispatch(setCharactersPage(1));
+    dispatch(fetchCharactersInfoStart(filter));
+    dispatch(fetchCharactersStart(1, filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
     if (!isPageFetched) {
-      dispatch(fetchCharactersStart(pageIndex));
+      dispatch(fetchCharactersStart(pageIndex, filter));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageIndex]);

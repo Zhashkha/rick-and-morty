@@ -6,6 +6,7 @@ import GET_CHARACTERS from "../../graphql/queries/get-characters";
 import GET_CHARACTERS_INFO from "../../graphql/queries/get-characters-info";
 import { Character, Info, Maybe } from "../../graphql/api-generated/graphql";
 import {
+  // clearCharacters as clearCharactersAction,
   fetchCharactersSuccess,
   fetchCharactersFailed,
   fetchCharactersInfoSuccess,
@@ -15,7 +16,10 @@ import { CHARACTERS_ACTION_TYPES } from "./characters.types";
 import { charactersInfoNormalize } from "../../graphql/normalization/get-characters-info";
 import { charactersNormalize } from "../../graphql/normalization/get-characters";
 
-function* fetchCharactersStartAsync({ payload: pageIndex }: AnyAction) {
+function* fetchCharactersStartAsync({
+  // payload: { page: pageIndex, filter, clearCharacters }
+  payload: { page: pageIndex, filter }
+}: AnyAction) {
   try {
     const apolloClient: ApolloClient<NormalizedCacheObject> = yield getContext(
       "apolloClient"
@@ -29,17 +33,21 @@ function* fetchCharactersStartAsync({ payload: pageIndex }: AnyAction) {
       yield call(apolloClient.query, {
         query: GET_CHARACTERS,
         variables: {
-          page: pageIndex
+          page: pageIndex,
+          filter
         }
       });
 
+    // if (!!clearCharacters) {
+    //   yield put(clearCharactersAction());
+    // }
     yield put(fetchCharactersSuccess(charactersNormalize(pageIndex, results)));
   } catch (error) {
     yield put(fetchCharactersFailed(error as Error));
   }
 }
 
-function* fetchCharactersInfoStartAsync() {
+function* fetchCharactersInfoStartAsync({ payload: filter }: AnyAction) {
   try {
     const apolloClient: ApolloClient<NormalizedCacheObject> = yield getContext(
       "apolloClient"
@@ -52,7 +60,10 @@ function* fetchCharactersInfoStartAsync() {
     }: { data: { characters: { info: Maybe<Info> } } } = yield call(
       apolloClient.query,
       {
-        query: GET_CHARACTERS_INFO
+        query: GET_CHARACTERS_INFO,
+        variables: {
+          filter
+        }
       }
     );
 

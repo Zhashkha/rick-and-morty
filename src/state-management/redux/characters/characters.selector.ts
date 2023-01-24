@@ -15,6 +15,11 @@ export const selectCharactersByPage = (page: number) =>
 export const selectIsPageFetched = (page: number) =>
   createSelector([selectCharacters], (characters) => !!characters[page]);
 
+export const selectCharactersFilter = createSelector(
+  [selectCharactersReducer],
+  (charactersReducer) => charactersReducer.filter
+);
+
 export const selectCharactersIsLoading = createSelector(
   [selectCharactersReducer],
   (charactersReducer) => charactersReducer.isLoading
