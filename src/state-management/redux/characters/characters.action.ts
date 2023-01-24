@@ -7,12 +7,10 @@ import { FilterCharacter } from "../../graphql/api-generated/graphql";
 export const fetchCharactersStart = (
   page: number,
   filter?: FilterCharacter
-  // clearCharacters: boolean = false
 ) =>
   createAction(CHARACTERS_ACTION_TYPES.FETCH_CHARACTERS_START, {
     page,
     filter
-    // clearCharacters
   });
 
 export const fetchCharactersSuccess = (characters: CharactersNormalized) =>

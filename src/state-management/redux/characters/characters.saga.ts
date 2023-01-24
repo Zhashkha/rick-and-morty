@@ -6,7 +6,6 @@ import GET_CHARACTERS from "../../graphql/queries/get-characters";
 import GET_CHARACTERS_INFO from "../../graphql/queries/get-characters-info";
 import { Character, Info, Maybe } from "../../graphql/api-generated/graphql";
 import {
-  // clearCharacters as clearCharactersAction,
   fetchCharactersSuccess,
   fetchCharactersFailed,
   fetchCharactersInfoSuccess,
@@ -17,7 +16,6 @@ import { charactersInfoNormalize } from "../../graphql/normalization/get-charact
 import { charactersNormalize } from "../../graphql/normalization/get-characters";
 
 function* fetchCharactersStartAsync({
-  // payload: { page: pageIndex, filter, clearCharacters }
   payload: { page: pageIndex, filter }
 }: AnyAction) {
   try {
@@ -38,9 +36,6 @@ function* fetchCharactersStartAsync({
         }
       });
 
-    // if (!!clearCharacters) {
-    //   yield put(clearCharactersAction());
-    // }
     yield put(fetchCharactersSuccess(charactersNormalize(pageIndex, results)));
   } catch (error) {
     yield put(fetchCharactersFailed(error as Error));
