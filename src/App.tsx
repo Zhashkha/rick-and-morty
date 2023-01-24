@@ -18,11 +18,11 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Root />}>
-            <Route index element={<CharacterList />} />
-            <Route path="characters" element={<CharacterList />} />
-            <Route path="episodes" element={<EpisodeList />} />
-            <Route path="locations" element={<LocationList />} />
-            <Route path="*" element={<NotFound />} />
+        <Route index element={<CharacterList />} />
+        <Route path="characters" element={<CharacterList />} />
+        <Route path="episodes" element={<EpisodeList />} />
+        <Route path="locations" element={<LocationList />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

@@ -1,10 +1,12 @@
+import { Container } from "@mui/material";
+
+import Title from "../../components/shared-components/title/title-component";
+
 const EpisodeList = () => {
   return (
-    <div>
-      <header>
-        <p>Rick and Morty. Episode list...</p>
-      </header>
-    </div>
+    <Container sx={{ marginTop: 5 }}>
+      <Title text="Episodes" />
+    </Container>
   );
 };
 

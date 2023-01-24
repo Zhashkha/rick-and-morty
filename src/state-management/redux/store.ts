@@ -40,7 +40,7 @@ const middleWares = [
 ].filter((middleware): middleware is Middleware => Boolean(middleware));
 
 const composeEnhancer =
-  (process.env.NODE_ENV !== "production" &&
+  (process.env.NODE_ENV === "development" &&
     window &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
   compose;

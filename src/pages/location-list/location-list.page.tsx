@@ -1,10 +1,12 @@
+import { Container } from "@mui/material";
+
+import Title from "../../components/shared-components/title/title-component";
+
 const LocationList = () => {
   return (
-    <div>
-      <header>
-        <p>Rick and Morty. Location list...</p>
-      </header>
-    </div>
+    <Container sx={{ marginTop: 5 }}>
+      <Title text="Locations" />
+    </Container>
   );
 };
 

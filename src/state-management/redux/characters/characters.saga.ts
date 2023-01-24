@@ -5,7 +5,6 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import GET_CHARACTERS from "../../graphql/queries/get-characters";
 import GET_CHARACTERS_INFO from "../../graphql/queries/get-characters-info";
 import { Character, Info, Maybe } from "../../graphql/api-generated/graphql";
-
 import {
   fetchCharactersSuccess,
   fetchCharactersFailed,
