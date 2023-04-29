@@ -12,8 +12,8 @@ import {
   fetchCharactersInfoFailed
 } from "./characters.action";
 import { CHARACTERS_ACTION_TYPES } from "./characters.types";
-import { charactersInfoNormalize } from "../../graphql/normalization/get-characters-info";
-import { charactersNormalize } from "../../graphql/normalization/get-characters";
+import { getCharactersInfoNormalization } from "../../graphql/normalization/get-characters-info";
+import { getCharactersNormalization } from "../../graphql/normalization/get-characters";
 
 function* fetchCharactersStartAsync({
   payload: { page: pageIndex, filter }
@@ -36,7 +36,9 @@ function* fetchCharactersStartAsync({
         }
       });
 
-    yield put(fetchCharactersSuccess(charactersNormalize(pageIndex, results)));
+    yield put(
+      fetchCharactersSuccess(getCharactersNormalization(pageIndex, results))
+    );
   } catch (error) {
     yield put(fetchCharactersFailed(error as Error));
   }
@@ -62,7 +64,7 @@ function* fetchCharactersInfoStartAsync({ payload: filter }: AnyAction) {
       }
     );
 
-    yield put(fetchCharactersInfoSuccess(charactersInfoNormalize(info)));
+    yield put(fetchCharactersInfoSuccess(getCharactersInfoNormalization(info)));
   } catch (error) {
     yield put(fetchCharactersInfoFailed(error as Error));
   }

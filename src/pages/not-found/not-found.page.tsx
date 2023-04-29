@@ -1,10 +1,23 @@
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+
+import {
+  ErrorImageOverlay,
+  ErrorImageContainer,
+  ErrorImageText
+} from "../../components/shared-components/error-image/error-image.styles";
+import ErrorImage from "../../components/shared-components/error-image/error-image.png";
+
 const NotFound = () => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <header>
-        <p>Page not found, sorry</p>
-      </header>
-    </div>
+    <ErrorImageOverlay>
+      <ErrorImageContainer imageUrl={ErrorImage} />
+      <ErrorImageText>Sorry, page not found.</ErrorImageText>
+      <Button variant="outlined" onClick={() => navigate("/")}>
+        Home
+      </Button>
+    </ErrorImageOverlay>
   );
 };
 

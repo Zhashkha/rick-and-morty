@@ -1,16 +1,17 @@
 import { Character, Maybe } from "../api-generated/graphql";
 
-export type CharactersNormalized =
+export type GetCharactersNormalized =
   | {
       [key: number]: Array<Character>;
     }
   | {};
 
-export const charactersNormalize = (
+export const getCharactersNormalization = (
   pageIndex: number,
   characters: Maybe<Array<Maybe<Character>>>
-): CharactersNormalized => {
-  return {
-    [pageIndex]: characters
-  };
-};
+): GetCharactersNormalized =>
+  characters
+    ? {
+        [pageIndex]: characters.filter(Boolean)
+      }
+    : {};

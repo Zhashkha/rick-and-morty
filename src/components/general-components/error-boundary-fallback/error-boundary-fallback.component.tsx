@@ -5,8 +5,8 @@ import {
   ErrorImageOverlay,
   ErrorImageContainer,
   ErrorImageText
-} from "./error-boundary-fallback.styles";
-import ErrorBoundaryFallbackImage from "./error-boundary-fallback.png";
+} from "../../shared-components/error-image/error-image.styles";
+import ErrorBoundaryFallbackImage from "../../shared-components/error-image/error-image.png";
 
 const ErrorBoundaryFallback = ({
   error,

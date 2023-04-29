@@ -13,8 +13,7 @@ import {
   CharactersLink,
   EpisodesLink,
   HomeLink,
-  LocationsLink,
-  NavLink
+  LocationsLink
 } from "./header.styles";
 
 const Header = () => {
@@ -32,7 +31,7 @@ const Header = () => {
     <AppBar position="static" color="default" sx={{ boxShadow: 0 }}>
       <Toolbar sx={{ flexWrap: "wrap", display: { xs: "none", md: "flex" } }}>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          <HomeLink to="/">Rick and Morty Reference Book</HomeLink>
+          <HomeLink to="/">Rick & Morty Reference Book</HomeLink>
         </Typography>
         <CharactersLink />
         <EpisodesLink sx={{ marginLeft: 2 }} />
