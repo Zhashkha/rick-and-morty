@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Stack, TextField, Button } from "@mui/material";
 
-import { selectCharactersFilter } from "../../state-management/redux/characters/characters.selector";
-import { setCharactersFilter } from "../../state-management/redux/characters/characters.action";
+import { selectCharactersFilter } from "../../../state-management/redux/characters/characters.selector";
+import { setCharactersFilter } from "../../../state-management/redux/characters/characters.action";
 
 const SearchBox = () => {
   const { name } = useSelector(selectCharactersFilter);

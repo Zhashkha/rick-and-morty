@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container, Grid, Pagination, Stack } from "@mui/material";
 
 import Title from "../../components/shared-components/title/title-component";
-import SearchBox from "../../components/character-list/search-box.component";
-import Sidebar from "../../components/character-list/sidebar.component";
+import SearchBox from "../../components/pages-components/character-list/search-box.component";
+import Sidebar from "../../components/pages-components/character-list/sidebar.component";
 import CharacterGrid from "../../components/shared-components/character-grid/character-grid.component";
 import Spinner from "../../components/general-components/spinner/spinner.component";
 import {

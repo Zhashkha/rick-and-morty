@@ -18,15 +18,18 @@ import {
   selectCharactersPageIndex
 } from "../../../state-management/redux/characters/characters.selector";
 import { ExpandMore } from "./character-grid.styles";
+import { Character } from "../../../state-management/graphql/api-generated/graphql";
 
 const CharacterGrid = () => {
   const [cardExpanded, setCardExpanded] = useState<{
-    [key: number]: boolean;
+    [key: string]: boolean;
   }>();
-  const pageIndex = useSelector(selectCharactersPageIndex);
-  const characters = useSelector(selectCharactersByPage(pageIndex));
+  const pageIndex: number = useSelector(selectCharactersPageIndex);
+  const characters: Character[] = useSelector(
+    selectCharactersByPage(pageIndex)
+  );
 
-  const handleExpandClick = (id: number) => {
+  const handleExpandClick = (id: string) => {
     setCardExpanded({
       ...cardExpanded,
       [id]: !((cardExpanded && cardExpanded[id]) || false)
@@ -35,7 +38,7 @@ const CharacterGrid = () => {
 
   return (
     <Grid container spacing={3}>
-      {characters?.map((character: any) => {
+      {characters?.map((character: Character) => {
         const {
           id,
           name,
@@ -43,11 +46,19 @@ const CharacterGrid = () => {
           species,
           type,
           gender,
-          origin: { name: originName },
-          location: { name: locationName },
+          origin,
+          location,
           episode: episodes,
           image
         } = character;
+
+        // typescript checking, since "id" is used as an index
+        if (!id) {
+          return null;
+        }
+
+        const originName = origin?.name,
+          locationName = location?.name;
 
         const badgeColor =
           status === "Alive"
@@ -69,8 +80,8 @@ const CharacterGrid = () => {
                 <CardMedia
                   component="img"
                   height="220"
-                  image={image}
-                  alt={name}
+                  image={image || ""}
+                  alt={name || ""}
                 />
                 <CardContent sx={{ paddingBottom: 0 }}>
                   <Typography variant="h5" sx={{ fontWeight: "bold" }}>

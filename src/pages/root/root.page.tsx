@@ -1,4 +1,4 @@
-import { Fragment, Suspense } from "react";
+import { Suspense } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -11,7 +11,7 @@ const Root = () => {
   const navigate = useNavigate();
 
   return (
-    <Fragment>
+    <>
       <Header />
       <ErrorBoundary
         FallbackComponent={ErrorBoundaryFallback}
@@ -25,7 +25,7 @@ const Root = () => {
         </Suspense>
       </ErrorBoundary>
       <Footer />
-    </Fragment>
+    </>
   );
 };
 

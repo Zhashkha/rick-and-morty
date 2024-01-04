@@ -3,6 +3,3 @@
 # Rick & Morty App Web Address
 
 [R & M](https://rick-and-morty-reference-book.netlify.app).
-
-# TODO: all necessary notes
-- Codegen explanation
